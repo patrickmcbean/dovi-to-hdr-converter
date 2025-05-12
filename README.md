@@ -25,10 +25,11 @@ Dolby Vision is a high dynamic range (HDR) format that provides an exceptional v
 2. Run the script from the command line, providing the following arguments:
 
    ```
-   python DoVi.py -i [VIDEO_PATH] -hdr [CONVERSION_FORMAT] --bitrate [BITRATE]
+   python DoVi.py -i [INPUT_PATH] -o [OUTPUT_PATH] --type [CONVERSION_FORMAT] --bitrate [BITRATE]
    ```
 
-   - `[VIDEO_PATH]`: The path to the Dolby Vision video file you wish to convert.
+   - `[INPUT_PATH]`: The path to the Dolby Vision video file you wish to convert.
+   - `[OUTPUT_PATH]`: Where you want the converted video to be saved.
    - `[CONVERSION_FORMAT]`: The desired conversion format (choose from "hdr10", "sdr", or "hlg").
    - `[BITRATE]`: The output bitrate in kbps (e.g., 8000k).
 
@@ -39,7 +40,7 @@ Dolby Vision is a high dynamic range (HDR) format that provides an exceptional v
 To convert a Dolby Vision video to HDR10 with an output bitrate of 8000 kbps:
 
 ```
-python DoVi.py -i my_dolby_vision_video.mp4 -hdr hdr10 --bitrate 8000
+python DoVi.py -i my_dolby_vision_video.mp4 -o my_hdr10_video.mp4 --type hdr10 --bitrate 8000
 ```
 
 Enjoy your Dolby Vision videos on a wide range of devices and screens!

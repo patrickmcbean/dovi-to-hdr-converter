@@ -1,7 +1,10 @@
 import argparse
 import subprocess
+from pathlib import Path
 
 def encode_video(input_file, output_file, output_bitrate, encoding_type):
+    container = "mkv" if output_file.suffix.lower() == ".mkv" else "mp4"
+            
     common_params = [
         'ffmpeg.exe',
         '-nostdin',
@@ -32,21 +35,23 @@ def encode_video(input_file, output_file, output_bitrate, encoding_type):
         '-i', input_file,
         '-vf', video_filters[encoding_type],
         '-c:v', 'libx265',
+        '-map', '0',
         '-map_chapters', '-1',
-        '-an', '-sn',
+        '-c:a', 'copy',
+        '-c:s', 'copy' if container == "mkv" else 'mov_text',
         '-b:v', f'{output_bitrate}k',
         '-x265-params', x265_params[encoding_type],
-        f'{output_file}_{encoding_type}_slow.mp4'
+        f'{output_file}_{encoding_type}.{container}'
     ]
 
     subprocess.run(ffmpeg_cmd)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Encode video using FFmpeg")
-    parser.add_argument("-i", "--input", required=True, help="Input file path")
-    parser.add_argument("-o", "--output", required=True, help="Output file path")
+    parser.add_argument("-i", "--input", type=Path, required=True, help="Input file path")
+    parser.add_argument("-o", "--output", type=Path, required=True, help="Output file path")
     parser.add_argument("--bitrate", type=int, required=True, help="Output bitrate in kbps")
     parser.add_argument("--type", required=True, choices=["hdr10", "sdr", "hlg"], help="Encoding type")
 
     args = parser.parse_args()
-    encode_video(args.input, args.output, args.bitrate, args.type)
+    encode_video(args.input, args.output, args.bitrate, args.type.lower())
